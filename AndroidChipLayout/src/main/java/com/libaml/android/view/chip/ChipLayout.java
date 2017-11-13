@@ -59,7 +59,6 @@ public class ChipLayout extends ViewGroup implements View.OnClickListener {
     private ChipItemChangeListener chipItemChangeListener;
     private int dropDownWidth = 300;
     private TextWatcher focusedTextWatcher;
-    private AutoCompleteTextView autoCompleteTextViewA;
 
     public ChipLayout(Context context) {
         this(context, null);
@@ -464,7 +463,7 @@ public class ChipLayout extends ViewGroup implements View.OnClickListener {
         final LayoutParams lparamsTextView = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lparamsTextView.setMargins(0, 0, 10, 0);
         lparamsTextView.gravity = Gravity.CENTER;
-        AutoCompleteTextView autoCompleteTextView  = new AutoCompleteTextView(context);
+        final AutoCompleteTextView autoCompleteTextView = new AutoCompleteTextView(context);
         autoCompleteTextView.setBackgroundColor(Color.parseColor("#00FFFFFF"));
         autoCompleteTextView.setLayoutParams(lparamsTextView);
         autoCompleteTextView.setHint(" ");
@@ -524,20 +523,20 @@ public class ChipLayout extends ViewGroup implements View.OnClickListener {
     {
 
         final LinearLayout layout = createLinearLayout(context);
-        autoCompleteTextViewA = createAutoCompleteTextView(context);
-        autoCompleteTextViewA.setTag(autoCompleteTextViewTag);
+        final AutoCompleteTextView autoCompleteTextView = createAutoCompleteTextView(context);
+        autoCompleteTextView.setTag(autoCompleteTextViewTag);
         if(this.getChildCount() < 1 && hintText != null){
-            autoCompleteTextViewA.setHint(hintText);
+            autoCompleteTextView.setHint(hintText);
         }
         final ImageButton imageButton = createImageButton(context);
         imageButton.setTag(imageButtonTag);
 
         if(labelPosition == 0){
-            layout.addView(autoCompleteTextViewA);
+            layout.addView(autoCompleteTextView);
             layout.addView(imageButton);
         }else{
             layout.addView(imageButton);
-            layout.addView(autoCompleteTextViewA);
+            layout.addView(autoCompleteTextView);
         }
 
 
@@ -551,21 +550,21 @@ public class ChipLayout extends ViewGroup implements View.OnClickListener {
         focusedTextWatcher = textWatcher;
 
         if(textSize > 0){
-            autoCompleteTextViewA.setTextSize(textSize);
+            autoCompleteTextView.setTextSize(textSize);
             ((ChipTextWatcher)textWatcher).setTextSize(textSize);
         }
-        autoCompleteTextViewA.addTextChangedListener(textWatcher);
+        autoCompleteTextView.addTextChangedListener(textWatcher);
         for (TextWatcher tw: listTextWatcher){
-            autoCompleteTextViewA.addTextChangedListener(tw);
+            autoCompleteTextView.addTextChangedListener(tw);
         }
 
-        OnFocusChangeListener focusChangeListener = new ChipOnFocusChangeListener(this, autoCompleteTextViewA,
+        OnFocusChangeListener focusChangeListener = new ChipOnFocusChangeListener(this, autoCompleteTextView,
                 chipDrawable, chipLayoutDrawable, onFocusChangeListener);
-        autoCompleteTextViewA.setOnFocusChangeListener(focusChangeListener);
+        autoCompleteTextView.setOnFocusChangeListener(focusChangeListener);
 
-        autoCompleteTextViewA.requestFocus();
-        autoCompleteTextViewA.setOnEditorActionListener(new ChipEditorActionListener(autoCompleteTextViewA));
-        autoCompleteTextViewA.setAdapter(adapter);
+        autoCompleteTextView.requestFocus();
+        autoCompleteTextView.setOnEditorActionListener(new ChipEditorActionListener(autoCompleteTextView));
+        autoCompleteTextView.setAdapter(adapter);
         int density = context.getResources().getDisplayMetrics().densityDpi;
         switch(density)
         {
@@ -597,24 +596,24 @@ public class ChipLayout extends ViewGroup implements View.OnClickListener {
                         chipLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                     if(chipLayout.getWidth() < dropDownWidth){
-                        autoCompleteTextViewA.setDropDownWidth(dropDownWidth);
+                        autoCompleteTextView.setDropDownWidth(dropDownWidth);
                     }else{
-                        autoCompleteTextViewA.setDropDownWidth(chipLayout.getWidth());
+                        autoCompleteTextView.setDropDownWidth(chipLayout.getWidth());
                     }
                 }
             });
         }else{
             if(chipLayout.getWidth() < dropDownWidth){
-                autoCompleteTextViewA.setDropDownWidth(dropDownWidth);
+                autoCompleteTextView.setDropDownWidth(dropDownWidth);
             }else{
-                autoCompleteTextViewA.setDropDownWidth(chipLayout.getWidth());
+                autoCompleteTextView.setDropDownWidth(chipLayout.getWidth());
             }
         }
-        autoCompleteTextViewA.setDropDownVerticalOffset(3);
-        autoCompleteTextViewA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        autoCompleteTextView.setDropDownVerticalOffset(3);
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                autoCompleteTextViewA.setText(autoCompleteTextViewA.getText().toString() + ",");
+                autoCompleteTextView.setText(autoCompleteTextView.getText().toString() + ",");
                 if(onItemClickListener != null){
                     onItemClickListener.onItemClick(arg0, arg1, arg2, arg3);
                 }
@@ -623,7 +622,7 @@ public class ChipLayout extends ViewGroup implements View.OnClickListener {
 
 
         if(val != null){
-            autoCompleteTextViewA.setText(val);
+            autoCompleteTextView.setText(val);
         }
         return layout;
     }
@@ -665,7 +664,6 @@ public class ChipLayout extends ViewGroup implements View.OnClickListener {
     public void setOnClickListener(OnClickListener l) {
         onClickListener = l;
     }
-
 
     private void setOnClickListener(){
         super.setOnClickListener(this);
@@ -865,8 +863,8 @@ public class ChipLayout extends ViewGroup implements View.OnClickListener {
         }
     }
 
-    public AutoCompleteTextView getAutoCompleteTextViewA() {
-        return autoCompleteTextViewA;
+    public TextWatcher getFocusedTextWatcher(){
+        return focusedTextWatcher;
     }
 
     public ArrayAdapter getAdapter() {
