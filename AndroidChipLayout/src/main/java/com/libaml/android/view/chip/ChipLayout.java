@@ -467,6 +467,7 @@ public class ChipLayout extends ViewGroup implements View.OnClickListener {
         autoCompleteTextView.setBackgroundColor(Color.parseColor("#00FFFFFF"));
         autoCompleteTextView.setLayoutParams(lparamsTextView);
         autoCompleteTextView.setHint(" ");
+        autoCompleteTextView.setThreshold(0);
         autoCompleteTextView.setPadding(10,0,10,10);
         autoCompleteTextView.setSingleLine(true);
         autoCompleteTextView.setTextColor(textColor);
@@ -547,6 +548,7 @@ public class ChipLayout extends ViewGroup implements View.OnClickListener {
         TextWatcher textWatcher = new ChipTextWatcher(layout, context, this, textColor, chipColor, newDrawable,
                 showDeleteButton, labelPosition, listTextWatcher, setText);
         focusedTextWatcher = textWatcher;
+
         if(textSize > 0){
             autoCompleteTextView.setTextSize(textSize);
             ((ChipTextWatcher)textWatcher).setTextSize(textSize);
@@ -859,6 +861,10 @@ public class ChipLayout extends ViewGroup implements View.OnClickListener {
             AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) ((ViewGroup)this.getChildAt(this.getChildCount()-1)).getChildAt(labelPosition);
             autoCompleteTextView.setAdapter(adapter);
         }
+    }
+
+    public TextWatcher getFocusedTextWatcher(){
+        return focusedTextWatcher;
     }
 
     public ArrayAdapter getAdapter() {
